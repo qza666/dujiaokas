@@ -30,7 +30,7 @@ class Orders
 
     /**
      * 优惠码服务层
-     * @var \App\App\Services\Coupons
+     * @var \App\Services\Coupons
      */
     private $couponService;
 
@@ -72,15 +72,16 @@ class Orders
             throw new RuleValidationException($validator->errors()->first());
         }
         // 极验验证
-        if (
-            cfg('is_open_geetest') == BaseModel::STATUS_OPEN
-            &&
-            !Validator::make($request->all(),
-                ['geetest_challenge' => 'geetest',],
-                [ 'geetest' => __('dujiaoka.prompt.geetest_validate_fail')])
+        if (cfg('is_open_geetest') == BaseModel::STATUS_OPEN) {
+            $geetestValidator = Validator::make(
+                $request->all(),
+                ['geetest_challenge' => 'geetest'],
+                ['geetest' => __('dujiaoka.prompt.geetest_validate_fail')]
+            );
 
-        ) {
-            throw new RuleValidationException(__('dujiaoka.prompt.geetest_validate_fail'));
+            if ($geetestValidator->fails()) {
+                throw new RuleValidationException(__('dujiaoka.prompt.geetest_validate_fail'));
+            }
         }
         // 待支付订单限制
         $limit = cfg('order_ip_limits');

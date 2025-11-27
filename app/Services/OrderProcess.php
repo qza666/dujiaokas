@@ -520,16 +520,15 @@ class OrderProcess
         }
         // 邮件数据
         $mailData = [
-            'created_at' => $order->create_at,
+            'created_at'   => $order->created_at,
             'product_name' => $order->orderItems->first()->goods_name ?? '未知商品',
-            'webname' => cfg('text_logo', '独角数卡'),
-            'weburl' => config('app.url') ?? 'http://dujiaoka.com',
-            'ord_info' => str_replace(PHP_EOL, '<br/>', $order->info),
-            'ord_title' => $order->title,
-            'order_id' => $order->order_sn,
-            'buy_amount' => $order->buy_amount,
-            'ord_price' => $order->actual_price,
-            'created_at' => $order->created_at,
+            'webname'      => cfg('text_logo', '独角数卡'),
+            'weburl'       => config('app.url') ?? 'http://dujiaoka.com',
+            'ord_info'     => str_replace(PHP_EOL, '<br/>', $order->info),
+            'ord_title'    => $order->title,
+            'order_id'     => $order->order_sn,
+            'buy_amount'   => $order->buy_amount,
+            'ord_price'    => $order->actual_price,
         ];
         $tpl = $this->emailtplService->detailByToken('manual_send_manage_mail');
         $mailBody = replaceMailTemplate($tpl, $mailData);
