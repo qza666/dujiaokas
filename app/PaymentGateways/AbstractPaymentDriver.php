@@ -78,7 +78,7 @@ abstract class AbstractPaymentDriver implements PaymentDriverInterface
      */
     protected function getReturnUrl(string $orderSN): string
     {
-        return url('detail-order-sn', ['orderSN' => $orderSN]);
+        return route('detail-order-sn', ['orderSN' => $orderSN]);
     }
 
     /**

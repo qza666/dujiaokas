@@ -108,7 +108,7 @@ class PayController extends BaseController
             // 如果订单金额为0 代表无需支付，直接成功
             if ($bccomp == 0) {
                 $this->orderProcessService->completedOrder($this->order->order_sn, 0.00);
-                return redirect(url('detail-order-sn', ['orderSN' => $this->order->order_sn]));
+                return redirect()->route('detail-order-sn', ['orderSN' => $this->order->order_sn]);
             }
             return redirect(url(urldecode($handle), ['payway' => $payway, 'orderSN' => $orderSN]));
         } catch (RuleValidationException $exception) {

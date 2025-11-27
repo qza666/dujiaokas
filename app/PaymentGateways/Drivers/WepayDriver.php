@@ -33,7 +33,7 @@ class WepayDriver extends AbstractPaymentDriver
                 'mch_id' => $this->payGateway->merchant_key,
                 'key' => $this->payGateway->merchant_pem,
                 'notify_url' => url('/pay/wepay/notify'),
-                'return_url' => url('detail-order-sn', ['orderSN' => $this->order->order_sn]),
+                'return_url' => route('detail-order-sn', ['orderSN' => $this->order->order_sn]),
                 'http' => [
                     'timeout' => 10.0,
                     'connect_timeout' => 10.0,
