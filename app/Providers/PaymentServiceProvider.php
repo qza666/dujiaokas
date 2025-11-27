@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Http\Controllers\UnifiedPaymentController;
 use App\PaymentGateways\PaymentManager;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
 
 /**
  * 支付服务提供者
@@ -41,20 +43,26 @@ class PaymentServiceProvider extends ServiceProvider
     {
         Route::macro('paymentRoutes', function () {
             $paymentManager = app(PaymentManager::class);
-            
+
             foreach ($paymentManager->getRegisteredDrivers() as $driver) {
                 Route::group([
                     'prefix' => "pay/{$driver}",
                     'middleware' => ['dujiaoka.pay_gate_way']
                 ], function () use ($driver) {
-                    Route::get('{payway}/{orderSN}', 'UnifiedPaymentController@gateway')
-                        ->name("payment.{$driver}.gateway");
-                    
-                    Route::post('notify_url', 'UnifiedPaymentController@notify')
-                        ->name("payment.{$driver}.notify");
-                    
-                    Route::get('return_url', 'UnifiedPaymentController@returnUrl')
-                        ->name("payment.{$driver}.return");
+                    Route::get('{payway}/{orderSN}', function (string $payway, string $orderSN) use ($driver) {
+                        return app(UnifiedPaymentController::class)
+                            ->gateway($driver, $payway, $orderSN);
+                    })->name("payment.{$driver}.gateway");
+
+                    Route::post('notify_url', function (Request $request) use ($driver) {
+                        return app(UnifiedPaymentController::class)
+                            ->notify($request, $driver);
+                    })->name("payment.{$driver}.notify");
+
+                    Route::get('return_url', function (Request $request) use ($driver) {
+                        return app(UnifiedPaymentController::class)
+                            ->returnUrl($request, $driver);
+                    })->name("payment.{$driver}.return");
                 });
             }
         });

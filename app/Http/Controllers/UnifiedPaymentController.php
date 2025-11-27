@@ -85,7 +85,7 @@ class UnifiedPaymentController extends Controller
     /**
      * 支付返回页面
      */
-    public function return(Request $request, string $driver)
+    public function returnUrl(Request $request, string $driver)
     {
         try {
             if (!$this->paymentManager->hasDriver($driver)) {
