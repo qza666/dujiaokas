@@ -191,9 +191,10 @@ class UserCenterController extends Controller
         $order->orderItems()->create([
             'goods_id' => 0,
             'goods_name' => '余额充值',
-            'goods_price' => $request->amount,
+            'sub_id' => 0,
+            'unit_price' => $request->amount,
             'quantity' => 1,
-            'total_price' => $request->amount,
+            'subtotal' => $request->amount,
             'type' => 0, // 特殊类型表示充值
             'info' => '用户余额充值'
         ]);
