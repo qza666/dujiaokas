@@ -30,7 +30,7 @@ Route::middleware('dujiaoka.boot')->namespace('Home')->group(function () {
     Route::prefix('order')->controller('OrderController')->group(function () {
         Route::post('create', 'createOrder');
         Route::get('bill/{orderSN}', 'bill');
-        Route::get('detail/{orderSN}', 'detailOrderSN');
+        Route::get('detail/{orderSN}', 'detailOrderSN')->name('detail-order-sn');
         Route::get('search', 'orderSearch');
         Route::get('status/{orderSN}', 'checkOrderStatus');
         Route::post('search/sn', 'searchOrderBySN');

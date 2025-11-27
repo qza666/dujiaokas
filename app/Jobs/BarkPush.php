@@ -79,7 +79,7 @@ class BarkPush implements ShouldQueue
 			"group"=>cfg('text_logo', '独角数卡')
 		];
 		if (cfg('is_open_bark_push_url', 0) == BaseModel::STATUS_OPEN) {
-			$params["url"] = url('detail-order-sn/'.$this->order->order_sn);
+                    $params["url"] = route('detail-order-sn', ['orderSN' => $this->order->order_sn]);
 		}
         $client->post($apiUrl,['form_params' => $params, 'verify' => false]);
     }
